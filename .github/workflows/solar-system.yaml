@@ -13,7 +13,7 @@ env:
 jobs:
     unit-testing:
         name: Unit Testing
-        runs-on: $ {{ matrix.os }}
+        
         strategy:
           matrix:
             nodejs_version: [18,19,20]
@@ -21,6 +21,7 @@ jobs:
             exclude:
               - nodejs_version: 18
                 os: macos-latest
+        runs-on: $ {{ matrix.os }}
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
