@@ -21,7 +21,7 @@ jobs:
             exclude:
               - nodejs_version: 18
                 os: macos-latest
-        runs-on: $ {{ matrix.os }}
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
@@ -42,3 +42,36 @@ jobs:
               with:
                 name: Mocha-Test-Result
                 path: test-results.xml
+
+    code-coverage:
+      name: Code Coverage
+      
+      strategy:
+        matrix:
+          nodejs_version: [18]
+          os: [ubuntu-latest,macos-latest]
+          exclude:
+            - nodejs_version: 18
+              os: macos-latest
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout Repo
+            uses: actions/checkout@v4
+
+          - name: Setup NodeJS version - ${{matrix.nodejs_version}}
+            uses: actions/setup-node@v3
+            with:
+              node-version: ${{matrix.nodejs_version}}
+          
+          - name: Install Dependencies
+            run: npm install
+
+          - name: Check code coverage
+            run: npm run coverage
+
+          - name : Archive code coverage results
+            uses: actions/upload-artifact@v3
+            with:
+              name: Code-Coverage-results
+              path: coverage
+              retention-days: 5
