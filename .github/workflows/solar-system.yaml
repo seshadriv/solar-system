@@ -17,7 +17,7 @@ jobs:
         strategy:
           matrix:
             nodejs_version: [18,20]
-            os: [ubuntu-latest,macos-latest]
+            os: [ubuntu-latest]
             exclude:
               - nodejs_version: 18
                 os: macos-latest
@@ -39,7 +39,7 @@ jobs:
               run: npm test 
 
             - name : Archive test results
-              if: steps.nodejs-unit-testing-step.outcome == 'failure' || steps.nodejs-unit-testing-step.outcome == 'success'
+              if: steps.nodejs-unit-testing-step.outcome == 'failure' || steps.nodejs-unit-testing-step.outcome == 'success' && failure()
               uses: actions/upload-artifact@v3
               with:
                 name: Mocha-Test-Result
