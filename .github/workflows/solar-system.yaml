@@ -52,7 +52,7 @@ jobs:
                 path: test-results.xml
 
     code-coverage:
-      name: Code Coverage
+      name: Code Coverage 
       
       strategy:
         matrix:
