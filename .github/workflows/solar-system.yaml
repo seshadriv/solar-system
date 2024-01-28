@@ -17,7 +17,7 @@ jobs:
         strategy:
           matrix:
             nodejs_version: [18,20]
-            os: [ubuntu-latest, macos-latest]
+            os: [ubuntu-latest]
             exclude:
               - nodejs_version: 18
                 os: macos-latest
@@ -90,3 +90,17 @@ jobs:
               name: Code-Coverage-results
               path: coverage
               retention-days: 5
+    
+    Login-Docker:    
+      name: Login to Docker
+      runs-on: ubuntu-latest
+      needs: [unit-testing, code-coverage]
+      steps:
+        - name: Docker Credentials
+          uses: docker/login-action@v3
+          with:
+           username: ${{ vars.DOCKERHUB_USERNAME }}
+           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+
+      
