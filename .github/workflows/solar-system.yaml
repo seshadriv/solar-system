@@ -161,6 +161,13 @@ jobs:
             version: 'v1.26.0' # default is latest stable
           id: install
 
+        - name: Configure K8 config
+          uses: azure/k8s-set-context@v3
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBECONFIG }}
+     
+
         - name: Fetch K8s Cluster details
           run: |
             kubectl version --short 
