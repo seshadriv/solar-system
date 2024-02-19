@@ -168,8 +168,28 @@ jobs:
             kubeconfig: ${{ secrets.KUBECONFIG }}
      
 
-        - name: Fetch K8s Cluster details
+        - name: Fetch K8s Cluster detailswe
           run: |
             kubectl version --short 
             echo ----------------------------------------------------------
             kubectl get nodes
+        
+        - name: Save Nginx ingress controller IP as a GITHUB environment variable
+          run: |
+              echo "INGRESS_IP=$(kubectl -n ingress-nginx get services ingress-nginx-controller -o jsonpath="{.status.loadBalancer.ingress[0].ip}")" >>  $GITHUB_ENV
+
+        - name: Replace tokens in manifest files
+          uses: cschleiden/replace-tokens@v1
+          with:
+            tokenPrefix: '_{_'
+            tokenSuffix: '_}_'
+            files: '["kubernetes/development/*.yaml"]'
+          env:
+            NAMESPACE: ${{vars.NAMESPACE}}
+            REPLICAS: ${{vars.REPLICAS}}
+            IMAGE: ${{vars.DOCKERHUB_USERNAME}}/solar-system:${{github.sha}}
+            INGRESS_IP: ${{ env.INGRESS_IP}}
+          
+        - name: Check manifest files 
+          run: | 
+            cat kubernetes/development/*.yaml
