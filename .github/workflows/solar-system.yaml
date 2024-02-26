@@ -192,4 +192,4 @@ jobs:
           
         - name: Check manifest files 
           run: | 
-            cat kubernetes/development/*.yaml
+            cat kubernetes/development/*.yaml 
