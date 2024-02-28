@@ -165,7 +165,7 @@ jobs:
           uses: azure/k8s-set-context@v3
           with:
             method: kubeconfig
-            kubeconfig: ${{ secrets.AWS_KK_KUBECONFIG }}
+            kubeconfig: ${{ secrets.KK_AZ_KUBECONFIG }}
      
 
         - name: Fetch K8s Cluster detailswe
